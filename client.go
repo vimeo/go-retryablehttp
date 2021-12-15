@@ -293,10 +293,20 @@ type Logger interface {
 // formatting where message string contains a format specifier, use Logger
 // interface.
 type LeveledLogger interface {
-	Error(ctx context.Context, msg string, keysAndValues ...interface{})
-	Info(ctx context.Context, msg string, keysAndValues ...interface{})
-	Debug(ctx context.Context, msg string, keysAndValues ...interface{})
-	Warn(ctx context.Context, msg string, keysAndValues ...interface{})
+	// Debug logs debugging or trace information.
+	Debug(ctx context.Context, f string, v ...interface{})
+
+	// Info logs normal information.
+	Info(ctx context.Context, f string, v ...interface{})
+
+	// Warning logs a message that indicates a potential problem.
+	Warning(ctx context.Context, f string, v ...interface{})
+
+	// Error logs an error that indicates a likely problem.
+	Error(ctx context.Context, f string, v ...interface{})
+
+	// Critical logs an error that indicates a definite problem.
+	Critical(ctx context.Context, f string, v ...interface{})
 }
 
 // hookLogger adapts an LeveledLogger to Logger for use by the existing hook functions
