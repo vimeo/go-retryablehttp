@@ -570,7 +570,7 @@ func (c *Client) Do(req *Request) (*http.Response, error) {
 		case LeveledLogger:
 			v.Debug(ctx, "%s %s", req.Method, req.URL)
 		case Logger:
-			v.Printf("%s %s", req.Method, req.URL)
+			v.Printf("[DEBUG] %s %s", req.Method, req.URL)
 		}
 	}
 
@@ -618,7 +618,7 @@ func (c *Client) Do(req *Request) (*http.Response, error) {
 			case LeveledLogger:
 				v.Error(ctx, "%s %s request failed: %v", req.Method, req.URL, doErr)
 			case Logger:
-				v.Printf("%s %s request failed: %v", req.Method, req.URL, doErr)
+				v.Printf("[ERR] %s %s request failed: %v", req.Method, req.URL, doErr)
 			}
 		} else {
 			// Call this here to maintain the behavior of logging all requests,
@@ -662,7 +662,7 @@ func (c *Client) Do(req *Request) (*http.Response, error) {
 			case LeveledLogger:
 				v.Debug(ctx, "%s: retrying in %s (%d left)", desc, wait, remain)
 			case Logger:
-				v.Printf("%s: retrying in %s (%d left)", desc, wait, remain)
+				v.Printf("[DEBUG] %s: retrying in %s (%d left)", desc, wait, remain)
 			}
 		}
 		timer := time.NewTimer(wait)
@@ -723,7 +723,7 @@ func (c *Client) drainBody(ctx context.Context, body io.ReadCloser) {
 			case LeveledLogger:
 				v.Error(ctx, "error reading response body: %v", err)
 			case Logger:
-				v.Printf("error reading response body: %v", err)
+				v.Printf("[ERR] error reading response body: %v", err)
 			}
 		}
 	}
