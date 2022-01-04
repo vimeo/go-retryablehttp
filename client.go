@@ -568,7 +568,7 @@ func (c *Client) Do(req *Request) (*http.Response, error) {
 	if logger != nil {
 		switch v := logger.(type) {
 		case LeveledLogger:
-			v.Debug(ctx, "performing request: %s %s", req.Method, req.URL)
+			v.Debug(ctx, "%s %s", req.Method, req.URL)
 		case Logger:
 			v.Printf("[DEBUG] %s %s", req.Method, req.URL)
 		}
@@ -616,7 +616,7 @@ func (c *Client) Do(req *Request) (*http.Response, error) {
 		if doErr != nil {
 			switch v := logger.(type) {
 			case LeveledLogger:
-				v.Error(ctx, "request failed %s %s. Error: %w", req.Method, req.URL, doErr)
+				v.Error(ctx, "%s %s request failed: %v", req.Method, req.URL, doErr)
 			case Logger:
 				v.Printf("[ERR] %s %s request failed: %v", req.Method, req.URL, doErr)
 			}
@@ -660,7 +660,7 @@ func (c *Client) Do(req *Request) (*http.Response, error) {
 			}
 			switch v := logger.(type) {
 			case LeveledLogger:
-				v.Debug(ctx, "retrying request %s timeout: %s, remaining: %d", desc, wait, remain)
+				v.Debug(ctx, "%s: retrying in %s (%d left)", desc, wait, remain)
 			case Logger:
 				v.Printf("[DEBUG] %s: retrying in %s (%d left)", desc, wait, remain)
 			}
@@ -721,7 +721,7 @@ func (c *Client) drainBody(ctx context.Context, body io.ReadCloser) {
 		if c.logger() != nil {
 			switch v := c.logger().(type) {
 			case LeveledLogger:
-				v.Error(ctx, "error reading response body: %w", err)
+				v.Error(ctx, "error reading response body: %v", err)
 			case Logger:
 				v.Printf("[ERR] error reading response body: %v", err)
 			}
